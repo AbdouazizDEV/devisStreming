@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KAHFI — Facture</title>
+    <meta name="description" content="Facture détaillée: développement, contenu, marketing, formation, packages, options, conditions et signatures." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes glow {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.8; }
+      }
+      .glow-green {
+        animation: glow 2s ease-in-out infinite;
+        filter: drop-shadow(0 0 8px rgba(132, 255, 0, 0.6));
+      }
+
+      /* Styles d'impression optimisés pour PDF */
+      @media print {
+        @page {
+          size: A4;
+          margin: 1.5cm 1.2cm;
+          orphans: 3;
+          widows: 3;
+        }
+
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+
+        body {
+          background: white !important;
+          color: #1e293b !important;
+          font-size: 12pt;
+          line-height: 1.5;
+        }
+
+        /* Header optimisé pour impression */
+        header {
+          position: relative !important;
+          background: white !important;
+          border-bottom: 2px solid #84cc16 !important;
+          padding: 1rem 0 !important;
+          page-break-inside: avoid;
+        }
+
+        header .glow-green {
+          filter: none !important;
+          animation: none !important;
+        }
+
+        header h1 {
+          color: #0f172a !important;
+        }
+
+        header .text-lime-400 {
+          color: #84cc16 !important;
+        }
+
+        /* Masquer les boutons en impression */
+        button,
+        a[href] {
+          display: none !important;
+        }
+
+        [class*="print:hidden"] {
+          display: none !important;
+        }
+
+        /* Main content */
+        main {
+          padding: 0 !important;
+        }
+
+        /* Sections avec sauts de page intelligents */
+        section {
+          page-break-inside: avoid;
+          margin-bottom: 1.5rem;
+        }
+
+        /* Cards et bordures optimisées */
+        .rounded-xl,
+        .rounded-lg {
+          border: 1px solid #cbd5e1 !important;
+          background: white !important;
+          box-shadow: none !important;
+          page-break-inside: avoid;
+        }
+
+        /* Texte sombre pour bonne lisibilité */
+        .text-white,
+        .text-slate-300,
+        .text-slate-400 {
+          color: #1e293b !important;
+        }
+
+        .text-lime-400,
+        .text-lime-500 {
+          color: #84cc16 !important;
+        }
+
+        /* Backgrounds optimisés */
+        [class*="bg-slate-800"] {
+          background: #f8fafc !important;
+        }
+
+        .bg-slate-900 {
+          background: white !important;
+        }
+
+        .bg-lime-500 {
+          background: #84cc16 !important;
+        }
+
+        [class*="bg-lime-500/10"] {
+          background: #f7fee7 !important;
+        }
+
+        [class*="bg-lime-500/20"] {
+          background: #ecfccb !important;
+        }
+
+        /* Bordures visibles */
+        [class*="border-lime-500"] {
+          border-color: #84cc16 !important;
+        }
+
+        .border-slate-700 {
+          border-color: #cbd5e1 !important;
+        }
+
+        /* Tables optimisées */
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          page-break-inside: avoid;
+        }
+
+        thead {
+          background: #f1f5f9 !important;
+        }
+
+        thead th {
+          color: #1e293b !important;
+          font-weight: 600;
+          border-bottom: 2px solid #84cc16 !important;
+        }
+
+        tbody tr {
+          border-bottom: 1px solid #e2e8f0 !important;
+        }
+
+        tbody tr:hover {
+          background: #f8fafc !important;
+        }
+
+        td, th {
+          padding: 0.75rem 1rem !important;
+        }
+
+        /* Totaux mis en évidence */
+        .bg-lime-500 td {
+          background: #84cc16 !important;
+          color: #0f172a !important;
+          font-weight: 700;
+        }
+
+        /* Footer optimisé */
+        footer {
+          margin-top: 2rem;
+          padding-top: 1rem;
+          border-top: 1px solid #cbd5e1 !important;
+          page-break-inside: avoid;
+        }
+
+        footer p {
+          color: #64748b !important;
+        }
+
+        /* Signatures optimisées */
+        #signatures {
+          page-break-inside: avoid;
+          margin-top: 2rem;
+        }
+
+        #signatures .rounded-lg {
+          border: 1px solid #cbd5e1 !important;
+          background: #f8fafc !important;
+        }
+
+        /* Espacement optimisé */
+        .mb-8 {
+          margin-bottom: 1.5rem !important;
+        }
+
+        .mt-10,
+        .mt-12 {
+          margin-top: 1.5rem !important;
+        }
+
+        .py-10 {
+          padding-top: 1rem !important;
+          padding-bottom: 1rem !important;
+        }
+
+        /* Grilles optimisées */
+        .grid {
+          display: grid;
+        }
+
+        /* Éviter les sauts de page dans les listes */
+        ul, ol {
+          page-break-inside: avoid;
+        }
+
+        /* Améliorer la lisibilité des prix */
+        [class*="text-[22px]"] {
+          font-size: 18pt !important;
+          font-weight: 700;
+        }
+
+        /* Logo KAHFI optimisé */
+        header .uppercase {
+          color: #0f172a !important;
+          font-weight: 700;
+        }
+
+        /* SVG optimisés */
+        svg {
+          display: inline-block;
+        }
+
+        /* Assurer la visibilité des séparateurs */
+        .divide-y > * {
+          border-top: 1px solid #e2e8f0 !important;
+        }
+
+        /* Espacement des sections */
+        .space-y-8 > * + * {
+          margin-top: 1.5rem !important;
+        }
+
+        .space-y-6 > * + * {
+          margin-top: 1rem !important;
+        }
+
+        /* Améliorer les totaux dans le récapitulatif */
+        [class*="bg-slate-800/70"] td {
+          font-weight: 700;
+          color: #0f172a !important;
+          background: #e2e8f0 !important;
+        }
+
+        /* Zones de signature avec bordures claires */
+        .border-dashed {
+          border-style: dashed !important;
+          border-color: #84cc16 !important;
+        }
+
+        /* Améliorer la lisibilité des codes/modules */
+        .font-medium.text-lime-400 {
+          color: #84cc16 !important;
+          font-weight: 600;
+        }
+
+        /* Optimiser les cartes de résumé */
+        [class*="hover:border-lime-500"] {
+          border: 1px solid #84cc16 !important;
+        }
+
+        /* Assurer que les totaux TTC sont bien visibles */
+        .border-2.border-lime-500 {
+          border: 2px solid #84cc16 !important;
+          background: #f7fee7 !important;
+        }
+
+        /* Améliorer les séparateurs verticaux */
+        .h-12.w-px {
+          background: #cbd5e1 !important;
+        }
+
+        /* Optimiser les badges et labels */
+        .rounded-full {
+          background: #ecfccb !important;
+          border: 1px solid #84cc16 !important;
+          color: #365314 !important;
+        }
+
+        /* Éviter les coupures dans les totaux */
+        tr.bg-lime-500,
+        tr[class*="bg-slate-800/70"] {
+          page-break-inside: avoid;
+        }
+
+        /* Améliorer la visibilité des icônes SVG */
+        svg path,
+        svg rect,
+        svg circle {
+          stroke: currentColor;
+          fill: none;
+        }
+
+        /* Espacement vertical optimisé */
+        .gap-4 {
+          gap: 1rem !important;
+        }
+
+        .gap-6 {
+          gap: 1.5rem !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="antialiased bg-slate-900 text-white font-[Inter]">
+    <!-- Header -->
+    <header class="sticky top-0 z-30 backdrop-blur supports-[backdrop-filter]:bg-slate-900/90 bg-slate-900/95 border-b border-lime-500/30">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <!-- Logo KAHFI -->
+            <div class="flex flex-col items-center">
+              <h1 class="text-3xl font-bold tracking-tight text-white uppercase" style="letter-spacing: 0.1em">KAHFI</h1>
+              <div class="flex items-center gap-2 mt-1">
+                <div class="h-0.5 w-8 bg-lime-400 rounded-full glow-green"></div>
+                <span class="text-lime-400 font-mono text-sm glow-green">&lt;CODE|&gt;</span>
+                <div class="h-0.5 w-8 bg-lime-400 rounded-full glow-green"></div>
+              </div>
+              <p class="text-xs text-white/70 uppercase mt-1 tracking-wider">Solutions Code Innovantes</p>
+            </div>
+            <div class="h-12 w-px bg-slate-700"></div>
+            <div class="flex flex-col">
+              <h2 class="text-xl leading-tight tracking-tight font-semibold text-white">Facture</h2>
+              <p class="text-sm text-slate-400">Valable 30 jours · Généré le <span id="date-facture"></span></p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="window.print()" class="inline-flex items-center gap-2 rounded-md border border-lime-500/50 bg-slate-800 px-3.5 py-2 text-sm font-medium text-white hover:bg-lime-500/10 hover:border-lime-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-500/30 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 9V2h12v7" />
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                <path d="M6 14h12v8H6z" />
+              </svg>
+              Imprimer / PDF
+            </button>
+            <a href="#signatures" class="inline-flex items-center gap-2 rounded-md bg-lime-500 text-slate-900 px-3.5 py-2 text-sm font-medium hover:bg-lime-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-500/50 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 3v6h6" />
+                <path d="M17 3 7 13" />
+                <path d="m21 3-4 4" />
+                <path d="M3 21v-4a2 2 0 0 1 2-2h4" />
+              </svg>
+              Aller à la signature
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 print:py-4">
+      <!-- Hero Summary -->
+      <section class="mb-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Total HT -->
+          <div class="rounded-lg border border-lime-500/30 bg-slate-800/50 p-4 hover:border-lime-500/50 transition">
+            <div class="flex items-center justify-between">
+              <span class="text-xs uppercase tracking-wide text-slate-400">Total HT</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-[18px] w-[18px] text-lime-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M20 7h-9" />
+                <path d="M14 17H5" />
+                <circle cx="17" cy="17" r="3" />
+                <circle cx="7" cy="7" r="3" />
+              </svg>
+            </div>
+            <div class="mt-2">
+              <p class="text-[22px] tracking-tight font-semibold text-white">2 570 000 CFA</p>
+              <p class="text-xs text-slate-400">Avant taxes</p>
+            </div>
+          </div>
+          <!-- Total TTC -->
+          <div class="rounded-lg border-2 border-lime-500 bg-lime-500/10 p-4 hover:border-lime-400 transition">
+            <div class="flex items-center justify-between">
+              <span class="text-xs uppercase tracking-wide text-lime-400">Total TTC</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-[18px] w-[18px] text-lime-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M20 7 10 17l-5-5" />
+              </svg>
+            </div>
+            <div class="mt-2">
+              <p class="text-[22px] tracking-tight font-semibold text-lime-400">3 032 600 CFA</p>
+              <p class="text-xs text-slate-300">TTC (TVA 18%)</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Parties A-D -->
+      <section class="space-y-8">
+        <!-- A. Développement Technique -->
+        <section class="rounded-xl border border-lime-500/30 bg-slate-800/30 overflow-hidden">
+          <div class="flex items-center justify-between px-5 py-4 border-b border-lime-500/30">
+            <div class="flex items-center gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-[20px] w-[20px] text-lime-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect width="18" height="14" x="3" y="4" rx="2" />
+                <path d="M8 21h8" />
+                <path d="M12 17v4" />
+              </svg>
+              <h2 class="text-[22px] tracking-tight font-semibold text-white">A. Développement Technique</h2>
+            </div>
+            <span class="text-sm font-medium text-lime-400">Sous-total: 2 345 000 CFA</span>
+          </div>
+          <div class="divide-y divide-slate-700">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
+              <div class="px-5 py-3 hover:bg-slate-800/50 transition">
+                <p class="font-medium text-lime-400">F6</p>
+                <p class="text-slate-300">Système commande WhatsApp</p>
+                <p class="text-sm text-lime-400 mt-1">190 000 CFA</p>
+              </div>
+              <div class="px-5 py-3 hover:bg-slate-800/50 transition">
+                <p class="font-medium text-lime-400">F7</p>
+                <p class="text-slate-300">Intégration paiement Wave</p>
+                <p class="text-sm text-lime-400 mt-1">260 000 CFA</p>
+              </div>
+              <div class="px-5 py-3 hover:bg-slate-800/50 transition">
+                <p class="font-medium text-lime-400">F8</p>
+                <p class="text-slate-300">Dashboard administrateur</p>
+                <p class="text-sm text-lime-400 mt-1">380 000 CFA</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
+              <div class="px-5 py-3 hover:bg-slate-800/50 transition">
+                <p class="font-medium text-lime-400">F9</p>
+                <p class="text-slate-300">Fonctionnalités PWA</p>
+                <p class="text-sm text-lime-400 mt-1">150 000 CFA</p>
+              </div>
+              <div class="px-5 py-3 hover:bg-slate-800/50 transition">
+                <p class="font-medium text-lime-400">I1</p>
+                <p class="text-slate-300">Google Tag Manager</p>
+                <p class="text-sm text-lime-400 mt-1">75 000 CFA</p>
+              </div>
+              <div class="px-5 py-3 hover:bg-slate-800/50 transition">
+                <p class="font-medium text-lime-400">I2</p>
+                <p class="text-slate-300">WhatsApp Business API</p>
+                <p class="text-sm text-lime-400 mt-1">110 000 CFA</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
+              <div class="px-5 py-3 hover:bg-slate-800/50 transition">
+                <p class="font-medium text-lime-400">I3</p>
+                <p class="text-slate-300">Wave Payment API</p>
+                <p class="text-sm text-lime-400 mt-1">150 000 CFA</p>
+              </div>
+              <div class="px-5 py-3 hover:bg-slate-800/50 transition">
+                <p class="font-medium text-lime-400">I4</p>
+                <p class="text-slate-300">Google Maps API</p>
+                <p class="text-sm text-lime-400 mt-1">60 000 CFA</p>
+              </div>
+              <div class="px-5 py-3 hover:bg-slate-800/50 transition">
+                <p class="font-medium text-lime-400">D1</p>
+                <p class="text-slate-300">Design UI/UX complet</p>
+                <p class="text-sm text-lime-400 mt-1">225 000 CFA</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
+              <div class="px-5 py-3 hover:bg-slate-800/50 transition">
+                <p class="font-medium text-lime-400">S1</p>
+                <p class="text-slate-300">Sécurité & Performance</p>
+                <p class="text-sm text-lime-400 mt-1">110 000 CFA</p>
+              </div>
+              <div class="px-5 py-3"></div>
+              <div class="px-5 py-3"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- D. Formation & Support -->
+        <section class="rounded-xl border border-lime-500/30 bg-slate-800/30 overflow-hidden">
+          <div class="flex items-center justify-between px-5 py-4 border-b border-lime-500/30">
+            <div class="flex items-center gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-[20px] w-[20px] text-lime-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="m22 7-10-5L2 7l10 5 10-5Z" />
+                <path d="M6 10.6V16a6 6 0 0 0 12 0v-5.4" />
+              </svg>
+              <h2 class="text-[22px] tracking-tight font-semibold text-white">D. Formation & Support</h2>
+            </div>
+            <span class="text-sm font-medium text-lime-400">Sous-total: 225 000 CFA</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-sm">
+              <thead class="bg-slate-800/50 text-slate-300">
+                <tr class="border-b border-slate-700">
+                  <th class="text-left font-medium px-5 py-3">Module</th>
+                  <th class="text-left font-medium px-5 py-3">Description</th>
+                  <th class="text-right font-medium px-5 py-3">Prix (CFA)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-700">
+                <tr class="hover:bg-slate-800/50"><td class="px-5 py-3 font-medium text-lime-400">T1</td><td class="px-5 py-3 text-slate-300">Formation Admin & Marketing</td><td class="px-5 py-3 text-right text-lime-400">225 000</td></tr>
+                <tr class="hover:bg-slate-800/50"><td class="px-5 py-3 font-medium text-lime-400">M1</td><td class="px-5 py-3 text-slate-300">Support 3 mois (inclus)</td><td class="px-5 py-3 text-right text-lime-400">0</td></tr>
+                <tr><td class="px-5 py-3"></td><td class="px-5 py-3"></td><td class="px-5 py-3"></td></tr>
+                <tr class="bg-slate-800/70">
+                  <td class="px-5 py-3 font-semibold text-lime-400">SOUS-TOTAL FORMATION</td>
+                  <td class="px-5 py-3"></td>
+                  <td class="px-5 py-3 text-right font-semibold text-lime-400">225 000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <!-- Récapitulatif Général -->
+      <section class="mt-10 rounded-xl border-2 border-lime-500/50 bg-slate-800/30 overflow-hidden">
+        <div class="px-5 py-4 border-b border-lime-500/30 flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-[20px] w-[20px] text-lime-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="4" width="18" height="16" rx="2" />
+            <path d="M3 10h18" />
+          </svg>
+          <h2 class="text-[22px] tracking-tight font-semibold text-white">Récapitulatif Général</h2>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead class="bg-slate-800/50 text-slate-300">
+              <tr class="border-b border-slate-700">
+                <th class="text-left font-medium px-5 py-3">Catégorie</th>
+                <th class="text-right font-medium px-5 py-3">Montant (CFA)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-700">
+              <tr class="hover:bg-slate-800/50"><td class="px-5 py-3 font-medium text-slate-300">A. Développement Technique</td><td class="px-5 py-3 text-right text-lime-400">2 345 000</td></tr>
+              <tr class="hover:bg-slate-800/50"><td class="px-5 py-3 font-medium text-slate-300">D. Formation & Support</td><td class="px-5 py-3 text-right text-lime-400">225 000</td></tr>
+              <tr><td class="px-5 py-3"></td><td class="px-5 py-3"></td></tr>
+              <tr class="bg-slate-800/70"><td class="px-5 py-3 font-semibold text-white">TOTAL HT</td><td class="px-5 py-3 text-right font-semibold text-lime-400">2 570 000</td></tr>
+              <tr class="hover:bg-slate-800/50"><td class="px-5 py-3 font-medium text-slate-300">TVA 18% (si applicable)</td><td class="px-5 py-3 text-right font-medium text-lime-400">462 600</td></tr>
+              <tr class="bg-lime-500 text-slate-900">
+                <td class="px-5 py-3 font-semibold">TOTAL TTC</td>
+                <td class="px-5 py-3 text-right font-semibold">3 032 600</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Conditions Générales Simplifiées -->
+      <section class="mt-12 space-y-6">
+        <div class="flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-[20px] w-[20px] text-lime-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 2h9a2 2 0 0 1 2 2v0a2 2 0 0 0 2 2h1v15a1 1 0 0 1-1 1H6z"/>
+            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+          </svg>
+          <h2 class="text-[22px] tracking-tight font-semibold text-white">Conditions Générales</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="rounded-xl border border-lime-500/30 bg-slate-800/30 p-6">
+            <h3 class="text-lg font-semibold text-white mb-3">Modalités de Paiement</h3>
+            <ul class="text-sm text-slate-300 space-y-2">
+              <li>• Acompte 40% à la signature</li>
+              <li>• 40% à mi-projet</li>
+              <li>• 20% à la livraison finale</li>
+              <li>• Paiement: Wave, Orange Money, Virement bancaire</li>
+            </ul>
+          </div>
+          <div class="rounded-xl border border-lime-500/30 bg-slate-800/30 p-6">
+            <h3 class="text-lg font-semibold text-white mb-3">Délais & Support</h3>
+            <ul class="text-sm text-slate-300 space-y-2">
+              <li>• Délai standard: 10-12 semaines</li>
+              <li>• Support technique: 3 mois inclus</li>
+              <li>• Code source fourni à la livraison</li>
+              <li>• Documentation complète incluse</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Signatures -->
+      <section id="signatures" class="mt-12">
+        <div class="rounded-xl border-2 border-lime-500/50 bg-slate-800/30 overflow-hidden">
+          <div class="px-5 py-4 border-b border-lime-500/30 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-[20px] w-[20px] text-lime-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M20 21v-7" />
+                <path d="M4 21v-4" />
+                <path d="M12 21V9" />
+                <path d="M2 10l10-7 10 7" />
+              </svg>
+              <h2 class="text-[22px] tracking-tight font-semibold text-white">Validation & Signatures</h2>
+            </div>
+            <div id="acceptedBadge" class="hidden items-center gap-2 rounded-full bg-lime-500/20 text-lime-400 px-3 py-1 text-sm font-medium">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-[16px] w-[16px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 7 10 17l-5-5"/>
+              </svg>
+              Facture acceptée le <span id="acceptedDate" class="ml-1">—</span>
+            </div>
+          </div>
+
+          <div class="px-5 py-5 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Client -->
+            <div class="rounded-lg border border-lime-500/30 bg-slate-800/50 p-5">
+              <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold tracking-tight text-white">Client</h3>
+                <span class="text-xs rounded-full bg-lime-500/20 text-lime-400 px-2 py-0.5">Signature requise</span>
+              </div>
+              <div class="mt-4 space-y-3 text-sm text-slate-300">
+                <p>J'accepte le présent devis et les conditions générales.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <p class="text-xs text-slate-400">Nom & Fonction</p>
+                    <div class="mt-1 h-10 rounded border border-lime-500/30 bg-slate-800 px-3 flex items-center text-slate-300">Nom, Prénom — Fonction</div>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-400">Date</p>
+                    <div id="date-client" class="mt-1 h-10 rounded border border-lime-500/30 bg-slate-800 px-3 flex items-center text-slate-300">__/__/____</div>
+                  </div>
+                </div>
+                <div class="mt-3">
+                  <p class="text-xs text-slate-400 mb-1">Signature</p>
+                  <div class="h-24 rounded border-2 border-dashed border-lime-500/30"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Prestataire KAHFI -->
+            <div class="rounded-lg border border-lime-500/30 bg-slate-800/50 p-5">
+              <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold tracking-tight text-white">KAHFI</h3>
+                <span class="text-xs rounded-full bg-lime-500/20 text-lime-400 px-2 py-0.5">Pour accord</span>
+              </div>
+              <div class="mt-4 space-y-3 text-sm text-slate-300">
+                <p>Pour KAHFI, le présent document engage la réalisation selon le périmètre défini.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <p class="text-xs text-slate-400">Nom & Fonction</p>
+                    <div class="mt-1 h-10 rounded border border-lime-500/30 bg-slate-800 px-3 flex items-center text-lime-400">Abdou Aziz DIOP — CEO</div>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-400">Date</p>
+                    <div id="date-presta" class="mt-1 h-10 rounded border border-lime-500/30 bg-slate-800 px-3 flex items-center text-slate-300">__/__/____</div>
+                  </div>
+                </div>
+                <div class="mt-3">
+                  <p class="text-xs text-slate-400 mb-1">Signature</p>
+                  <div class="h-24 rounded border-2 border-dashed border-lime-500/30"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="px-5 pb-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <p class="text-xs text-slate-400">
+              Valable 30 jours. En signant, vous confirmez avoir lu et accepté les conditions générales.
+            </p>
+            <div class="flex items-center gap-2 print:hidden">
+              <button id="acceptBtn" class="inline-flex items-center gap-2 rounded-md bg-lime-500 text-slate-900 px-3.5 py-2 text-sm font-medium hover:bg-lime-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-500/50 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M20 7 10 17l-5-5" />
+                </svg>
+                Accepter cette facture
+              </button>
+              <button onclick="window.print()" class="inline-flex items-center gap-2 rounded-md border border-lime-500/50 bg-slate-800 px-3.5 py-2 text-sm font-medium text-white hover:bg-lime-500/10 hover:border-lime-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-500/30 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M6 9V2h12v7" />
+                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                  <path d="M6 14h12v8H6z" />
+                </svg>
+                Imprimer / PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 text-xs text-slate-400">
+      <div class="border-t border-lime-500/30 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <p>© 2025 — KAHFI · Solutions Code Innovantes · Réf: KAHFI-FACT-V1</p>
+        <p class="print:hidden">Contact: <span class="font-medium text-lime-400">contact@kahfi.com</span></p>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        const acceptBtn = document.getElementById('acceptBtn');
+        const acceptedBadge = document.getElementById('acceptedBadge');
+        const acceptedDate = document.getElementById('acceptedDate');
+        const dateClient = document.getElementById('date-client');
+        const datePresta = document.getElementById('date-presta');
+
+        function formatDateFR(date) {
+          try {
+            return new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(date);
+          } catch {
+            const d = String(date.getDate()).padStart(2, '0');
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const y = date.getFullYear();
+            return d + '/' + m + '/' + y;
+          }
+        }
+
+        // Set current date in header
+        const dateFacture = document.getElementById('date-facture');
+        if (dateFacture) {
+          const now = new Date();
+          dateFacture.textContent = formatDateFR(now);
+        }
+
+        if (acceptBtn) {
+          acceptBtn.addEventListener('click', () => {
+            const now = new Date();
+            const f = formatDateFR(now);
+            if (acceptedBadge) acceptedBadge.classList.remove('hidden');
+            if (acceptedDate) acceptedDate.textContent = f;
+            if (dateClient) dateClient.textContent = f;
+            if (datePresta) datePresta.textContent = f;
+            acceptBtn.classList.add('pointer-events-none', 'opacity-60');
+            acceptBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7 10 17l-5-5"/></svg> Accepté';
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>
